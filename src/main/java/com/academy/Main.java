@@ -2,6 +2,7 @@ package com.academy;
 
 import static java.sql.JDBCType.VARCHAR;
 
+import com.academy.model.DataSource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -18,40 +19,57 @@ import java.util.Properties;
 public class Main {
 
   public static void main(String[] args)
-      throws ClassNotFoundException, SQLException, IOException {
+      throws SQLException {
     //Class.forName("com.mysql.cj.jdbc.Driver");
 
-    Properties properties = new Properties();
+    Connection connection = DataSource.getInstance().getConnection();
 
-    InputStream inputStream = new FileInputStream("src/main/resources/db.properties");
+    //connection.setAutoCommit(false);
 
-    properties.load(inputStream);
+    try {
+      PreparedStatement statement = connection.prepareStatement(
+          "update employee set account = ? where id = ?");
+      statement.setInt(1, 0);
+      statement.setInt(2, 10);
 
-    Connection connection = DriverManager.getConnection(properties.getProperty("db.url"),properties.getProperty("db.user"),
-        properties.getProperty("db.password"));
+      statement.executeUpdate();
 
-    String name = "Ivan";
+//    if (true) {
+//      throw new RuntimeException();
+//    }
 
-    PreparedStatement statement = connection.prepareStatement("select * from employee where name=?");
-    statement.setString(1, name);
+      statement.setInt(1, 100);
+      statement.setInt(2, 11);
 
-    ResultSet result = statement.executeQuery();
+      statement.executeUpdate();
 
-    while (result.next()) {
-      System.out.println(result.getString("id") + " " + result.getString("name") + " " +  result.getString("job") + " " + result.getString("year"));
+      connection.commit();
+    } catch (RuntimeException e) {
+      connection.rollback();
     }
+
+//    String name = "Ivan";
+//
+//    PreparedStatement statement = connection.prepareStatement("select * from employee where name=?");
+//    statement.setString(1, name);
+//
+//    ResultSet result = statement.executeQuery();
+//
+//    while (result.next()) {
+//      System.out.println(result.getString("id") + " " + result.getString("name") + " " +  result.getString("job") + " " + result.getString("year"));
+//    }
 
 //    int result  = statement.executeUpdate("update employee set year = 2010 where id = 10");
 
-    CallableStatement callableStatement = connection.prepareCall("{call employeecount(?)}");
-    callableStatement.registerOutParameter(1, VARCHAR);
-    callableStatement.execute();
+//    CallableStatement callableStatement = connection.prepareCall("{call employeecount(?)}");
+//    callableStatement.registerOutParameter(1, VARCHAR);
+//    callableStatement.execute();
+//
+//    System.out.println(callableStatement.getInt(1));
 
-    System.out.println(callableStatement.getInt(1));
-
-    result.close();
-    statement.close();
-    connection.close();
+//    result.close();
+//    statement.close();
+    //connection.close();
 
     System.out.println("Hello world");
   }

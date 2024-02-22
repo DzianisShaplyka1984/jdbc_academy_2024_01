@@ -21,5 +21,35 @@
       <artifactId>mysql-connector-j</artifactId>
       <version>8.3.0</version>
     </dependency>
+
+    <!-- https://mvnrepository.com/artifact/com.mchange/c3p0 -->
+    <dependency>
+      <groupId>com.mchange</groupId>
+      <artifactId>c3p0</artifactId>
+      <version>0.9.5.5</version>
+    </dependency>
+
   </dependencies>
+
+  <build>
+    <plugins>
+      <!-- https://mvnrepository.com/artifact/org.flywaydb/flyway-maven-plugin -->
+      <plugin>
+        <groupId>org.flywaydb</groupId>
+        <artifactId>flyway-maven-plugin</artifactId>
+        <version>8.0.5</version>
+        <configuration>
+          <locations>
+            <location>filesystem:src/main/resources/migrations</location>
+          </locations>
+          <url>jdbc:mysql://localhost:3306/test_2024_01</url>
+          <user>admin</user>
+          <password>admin</password>
+        </configuration>
+      </plugin>
+
+
+    </plugins>
+
+  </build>
 </project>
