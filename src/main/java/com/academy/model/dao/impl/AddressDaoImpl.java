@@ -4,7 +4,11 @@ import com.academy.model.dao.AddressDao;
 import com.academy.model.domain.Address;
 import java.util.List;
 
-public class AddressDaoImpl implements AddressDao {
+public class AddressDaoImpl extends DefaultDaoImpl<Address, Integer> implements AddressDao {
+
+  public AddressDaoImpl() {
+    super(Address.class);
+  }
 
   @Override
   public List<Address> getByCity(String city) {
@@ -12,27 +16,8 @@ public class AddressDaoImpl implements AddressDao {
   }
 
   @Override
-  public void save(Address entity) {
-
-  }
-
-  @Override
-  public void update(Address entity) {
-
-  }
-
-  @Override
-  public void delete(Address entity) {
-
-  }
-
-  @Override
   public List<Address> getAll() {
     return null;
   }
 
-  @Override
-  public Address getById(Integer id) {
-    return null;
-  }
 }

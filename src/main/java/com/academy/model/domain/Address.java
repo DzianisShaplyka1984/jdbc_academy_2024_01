@@ -8,4 +8,5 @@ public class Address {
   private String street;
   private String city;
   private String appartment;
+  private Employee employee;
 }

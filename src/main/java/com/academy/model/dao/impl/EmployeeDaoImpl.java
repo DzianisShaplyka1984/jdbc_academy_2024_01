@@ -10,124 +10,26 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import org.hibernate.Session;
 
-public class EmployeeDaoImpl implements EmployeeDao {
+public class EmployeeDaoImpl extends DefaultDaoImpl<Employee, Integer> implements EmployeeDao {
 
-  public void save(Employee employee) {
-    Connection connection = DataSource.getInstance().getConnection();
-
-    try (PreparedStatement statement = connection.prepareStatement("insert into employee (name, job, salary) values (?, ?, ?)")) {
-      statement.setString(1, employee.getName());
-      statement.setString(2, employee.getJob());
-      statement.setInt(3, employee.getSalary());
-
-      statement.executeUpdate();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
-
-  public void update(Employee employee) {
-
-  }
-
-  public void delete(Employee employee) {
-
+  public EmployeeDaoImpl() {
+    super(Employee.class);
   }
 
   public List<Employee> getAll() {
-    Connection connection = DataSource.getInstance().getConnection();
+    EntityManager entityManager = DataSource.getInstance().getEntityManager();
 
-    List<Employee> employees = new ArrayList<>();
+    Query query = entityManager.createQuery("from Employee");
 
-    try (PreparedStatement statement = connection.prepareStatement("select * from employee")) {
-      ResultSet result = statement.executeQuery();
-
-      while (result.next()) {
-        Employee employee = new Employee();
-        employee.setId(result.getInt("id"));
-        employee.setName(result.getString("name"));
-        employee.setJob(result.getString("job"));
-        employee.setYear(result.getInt("year"));
-        employee.setSalary(result.getInt("salary"));
-        employee.setEmail(result.getString("email"));
-        employee.setAccount(result.getInt("account"));
-
-        employees.add(employee);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return employees;
+    return query.getResultList();
   }
 
   public List<Employee> getAllWithAddress() {
-    Connection connection = DataSource.getInstance().getConnection();
-
-    List<Employee> employees = new ArrayList<>();
-
-    try (PreparedStatement statement = connection.prepareStatement("select employee.id as employeeId, name, job, year, email, account, salary, address.id as addressId, street, city, appartment from employee left join address on employee.id = address.employee_id")) {
-      ResultSet result = statement.executeQuery();
-
-      while (result.next()) {
-        Employee employee = new Employee();
-        employee.setId(result.getInt("employeeId"));
-        employee.setName(result.getString("name"));
-        employee.setJob(result.getString("job"));
-        employee.setYear(result.getInt("year"));
-        employee.setSalary(result.getInt("salary"));
-        employee.setEmail(result.getString("email"));
-        employee.setAccount(result.getInt("account"));
-
-        List<Address> addresses = new ArrayList<>();
-        if (result.getString("city") != null) {
-          Address address = new Address();
-
-          address.setId(result.getInt("addressId"));
-          address.setCity(result.getString("city"));
-          address.setStreet(result.getString("street"));
-          address.setAppartment(result.getString("appartment"));
-
-          addresses.add(address);
-        }
-
-        employee.setAddresses(addresses);
-        employees.add(employee);
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return employees;
-  }
-
-  public Employee getById(Integer id) {
-    Connection connection = DataSource.getInstance().getConnection();
-
-    Employee employee = null;
-
-    try (PreparedStatement statement = connection.prepareStatement("select * from employee where id=?")) {
-      statement.setInt(1, id);
-
-      ResultSet result = statement.executeQuery();
-
-      while (result.next()) {
-        employee = new Employee();
-
-        employee.setId(result.getInt("id"));
-        employee.setName(result.getString("name"));
-        employee.setJob(result.getString("job"));
-        employee.setYear(result.getInt("year"));
-        employee.setSalary(result.getInt("salary"));
-        employee.setEmail(result.getString("email"));
-        employee.setAccount(result.getInt("account"));
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return employee;
+    return null;
   }
 
   public List<Employee> getByName(String name) {

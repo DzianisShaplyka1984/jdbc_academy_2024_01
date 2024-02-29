@@ -1,6 +1,5 @@
 package com.academy.model;
 
-import com.mchange.v2.c3p0.ComboPooledDataSource;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -9,44 +8,29 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.util.Properties;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.Persistence;
+import org.hibernate.Session;
 
 public class DataSource {
   private static DataSource instance = new DataSource();
-  private ComboPooledDataSource comboPooledDataSource;
+
+  private EntityManagerFactory entityManagerFactory;
 
   public static DataSource getInstance() {
     return instance;
   }
 
   private DataSource() {
-    Properties properties = new Properties();
-
-    try (InputStream inputStream = new FileInputStream("src/main/resources/db.properties")) {
-      properties.load(inputStream);
-    } catch (IOException e) {
-      e.printStackTrace();
-    }
-
-    comboPooledDataSource = new ComboPooledDataSource();
-    comboPooledDataSource.setJdbcUrl(properties.getProperty("db.url"));
-    comboPooledDataSource.setUser(properties.getProperty("db.user"));
-    comboPooledDataSource.setPassword(properties.getProperty("db.password"));
-
-    comboPooledDataSource.setInitialPoolSize(10);
-    comboPooledDataSource.setMinPoolSize(10);
-    comboPooledDataSource.setMaxPoolSize(30);
-    comboPooledDataSource.setMaxConnectionAge(1000 * 60 * 10);
+    entityManagerFactory = Persistence.createEntityManagerFactory("it_academy");
   }
 
-  public Connection getConnection() {
-    Connection connection = null;
+  public EntityManager getEntityManager() {
+    return entityManagerFactory.createEntityManager();
+  }
 
-    try {
-      connection = comboPooledDataSource.getConnection();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-
-    return connection;
+  public Session getSession() {
+    return getEntityManager().unwrap(Session.class);
   }
 }
