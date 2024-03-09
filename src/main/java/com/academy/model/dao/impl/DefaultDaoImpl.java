@@ -16,8 +16,7 @@ public class DefaultDaoImpl<T, I> implements DefaultDao<T, I> {
   public void saveOrUpdate(T entity) {
     EntityManager entityManager = DataSource.getInstance().getEntityManager();
     entityManager.getTransaction().begin();
-    entity = entityManager.merge(entity);
-    entityManager.persist(entity);
+    entityManager.persist(entityManager.contains(entity) ? entity : entityManager.merge(entity));
     entityManager.getTransaction().commit();
 
 //    Session session = DataSource.getInstance().getSession();

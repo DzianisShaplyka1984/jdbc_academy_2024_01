@@ -16,8 +16,8 @@ public class Main {
 //    List<Address> addresses = addressDao.getAll();
 
     EmployeeDao employeeDao = new EmployeeDaoImpl();
-
-    List<Employee> employees = employeeDao.getAll();
+//
+//    List<Employee> employees = employeeDao.getAll();
 
 //    Address addressToSave = new Address();
 //    addressToSave.setCity("Vitebsk");
@@ -25,12 +25,11 @@ public class Main {
 //    List<Address> addresses = new ArrayList<>();
 //    addresses.add(addressToSave);
 //
-//    Employee employeeToSave = new Employee();
-//
-//    employeeToSave.setName("Dzianis");
-//    employeeToSave.setAddresses(addresses);
-//
-//    employeeDao.saveOrUpdate(employeeToSave);
+    Employee employeeToSave = new Employee();
+
+    employeeToSave.setName("Ivan123");
+
+    employeeDao.saveOrUpdate(employeeToSave);
 
 //    Employee employee = new Employee();
 //    employee.setId(19);
@@ -39,17 +38,17 @@ public class Main {
 
 //    Employee employee = employeeDao.getById(10);
 
-    for (Employee employee :employees) {
-      System.out.println(employee.getName());
-
-      for (Address address : employee.getAddresses()) {
-        System.out.println("   " + "Address: " + address.getCity());
-      }
-
-      for (EmployeeDepartment employeeDepartment : employee.getDepartments()) {
-        System.out.println("   " + "Department: " + employeeDepartment.getDepartment().getName());
-      }
-    }
+//    for (Employee employee :employees) {
+//      System.out.println(employee.getName());
+//
+//      for (Address address : employee.getAddresses()) {
+//        System.out.println("   " + "Address: " + address.getCity());
+//      }
+//
+//      for (EmployeeDepartment employeeDepartment : employee.getDepartments()) {
+//        System.out.println("   " + "Department: " + employeeDepartment.getDepartment().getName());
+//      }
+//    }
 
     System.out.println("Hello world");
   }
