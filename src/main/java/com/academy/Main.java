@@ -17,7 +17,7 @@ public class Main {
 
     EmployeeDao employeeDao = new EmployeeDaoImpl();
 //
-//    List<Employee> employees = employeeDao.getAll();
+    List<Employee> employees = employeeDao.getAll();
 
 //    Address addressToSave = new Address();
 //    addressToSave.setCity("Vitebsk");
@@ -25,11 +25,11 @@ public class Main {
 //    List<Address> addresses = new ArrayList<>();
 //    addresses.add(addressToSave);
 //
-    Employee employeeToSave = new Employee();
-
-    employeeToSave.setName("Ivan123");
-
-    employeeDao.saveOrUpdate(employeeToSave);
+//    Employee employeeToSave = new Employee();
+//
+//    employeeToSave.setName("Ivan123");
+//
+//    employeeDao.saveOrUpdate(employeeToSave);
 
 //    Employee employee = new Employee();
 //    employee.setId(19);
@@ -50,6 +50,7 @@ public class Main {
 //      }
 //    }
 
+    employeeDao.getAllCriteria();
     System.out.println("Hello world");
   }
 }

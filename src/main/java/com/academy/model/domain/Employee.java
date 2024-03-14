@@ -3,6 +3,7 @@ package com.academy.model.domain;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
@@ -22,7 +23,7 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 @Entity
 @Table(name = "employee")
 //@Immutable
-public class Employee {
+public class Employee extends ModifierOptions{
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Integer id;
@@ -35,9 +36,12 @@ public class Employee {
   private String employeePhone;
   @Formula(value = "Concat(name, year)")
   private String nameYear;
-//  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-//  @JoinColumn(name = "employee_id")
-//  private List<Address> addresses;
+  @Embedded
+  private DocData docData;
+
+  @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+  @JoinColumn(name = "employee_id")
+  private List<Address> addresses;
 //  @OneToMany(mappedBy = "employee")
 //  private List<EmployeeDepartment> departments;
 }
