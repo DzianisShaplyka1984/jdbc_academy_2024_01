@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ehcache>
+  <defaultCache maxEntriesLocalHeap="100" timeToLiveSeconds="180" memoryStoreEvictionPolicy="FIFO">
+  </defaultCache>
+  <cache name="com.academy.model.domain.Employee" maxEntriesLocalHeap="100">
+
+  </cache>
+  <cache name="com.academy.model.domain.Department" maxEntriesLocalHeap="10">
+
+  </cache>
+</ehcache>

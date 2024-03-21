@@ -50,7 +50,7 @@ public class Main {
 //      }
 //    }
 
-    employeeDao.getAllCriteria();
+    //employeeDao.updateCriteria(25, "Hi Mark");
     System.out.println("Hello world");
   }
 }

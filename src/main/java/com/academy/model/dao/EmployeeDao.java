@@ -30,4 +30,10 @@ public interface EmployeeDao extends DefaultDao<Employee, Integer>{
   List<Employee> findSorted(boolean sort, String orderBy);
 
   List<Employee> getAllCriteria();
+
+  void updateCriteria(Integer id, String name);
+
+  void deleteCriteria(Integer id);
+
+  Long countCriteria();
 }

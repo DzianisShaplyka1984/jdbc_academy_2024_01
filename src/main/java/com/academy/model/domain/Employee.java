@@ -1,5 +1,6 @@
 package com.academy.model.domain;
 
+import java.time.Instant;
 import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
@@ -14,6 +15,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 import lombok.Data;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Formula;
 import org.hibernate.annotations.Immutable;
@@ -22,6 +25,7 @@ import org.hibernate.annotations.SelectBeforeUpdate;
 @Data
 @Entity
 @Table(name = "employee")
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 //@Immutable
 public class Employee extends ModifierOptions{
   @Id
@@ -32,6 +36,7 @@ public class Employee extends ModifierOptions{
   private String email;
   private Integer salary;
   private Integer account;
+  private Instant dob;
   @Column(name = "phone")
   private String employeePhone;
   @Formula(value = "Concat(name, year)")

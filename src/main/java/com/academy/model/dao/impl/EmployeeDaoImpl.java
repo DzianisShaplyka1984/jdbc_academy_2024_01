@@ -10,7 +10,9 @@ import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
+import javax.persistence.criteria.CriteriaUpdate;
 import javax.persistence.criteria.Order;
 import javax.persistence.criteria.Predicate;
 import javax.persistence.criteria.Root;
@@ -188,4 +190,49 @@ public class EmployeeDaoImpl extends DefaultDaoImpl<Employee, Integer> implement
 
     return entityManager.createQuery(criteriaQuery).getResultList();
   }
+
+  @Override
+  public void updateCriteria(Integer id, String name) {
+    EntityManager entityManager = DataSource.getInstance().getEntityManager();
+
+    entityManager.getTransaction().begin();
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaUpdate<Employee> criteriaQuery = criteriaBuilder.createCriteriaUpdate(Employee.class);
+    Root<Employee> employeeRoot = criteriaQuery.from(Employee.class);
+    criteriaQuery.set("name", name).where(criteriaBuilder.equal(employeeRoot.get("id"), id));
+
+    entityManager.createQuery(criteriaQuery).executeUpdate();
+
+    entityManager.getTransaction().commit();
+  }
+
+  @Override
+  public void deleteCriteria(Integer id) {
+    EntityManager entityManager = DataSource.getInstance().getEntityManager();
+
+    entityManager.getTransaction().begin();
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaDelete<Employee> criteriaQuery = criteriaBuilder.createCriteriaDelete(Employee.class);
+    Root<Employee> employeeRoot = criteriaQuery.from(Employee.class);
+    criteriaQuery.where(criteriaBuilder.equal(employeeRoot.get("id"), id));
+
+    entityManager.createQuery(criteriaQuery).executeUpdate();
+
+    entityManager.getTransaction().commit();
+  }
+
+  @Override
+  public Long countCriteria() {
+    EntityManager entityManager = DataSource.getInstance().getEntityManager();
+
+    CriteriaBuilder criteriaBuilder = entityManager.getCriteriaBuilder();
+    CriteriaQuery<Integer> criteriaQuery = criteriaBuilder.createQuery(Integer.class);
+    Root<Employee> employeeRoot = criteriaQuery.from(Employee.class);
+
+    criteriaQuery.select(criteriaBuilder.max(employeeRoot.get("salary")));
+
+    return entityManager.createQuery(criteriaQuery).getSingleResult().longValue();
+  }
+
+
 }
